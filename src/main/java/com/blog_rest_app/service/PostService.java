@@ -1,5 +1,7 @@
 package com.blog_rest_app.service;
 
+import com.blog_rest_app.dto.comment.CreateCommentDTO;
+import com.blog_rest_app.dto.comment.UpdateCommentDTO;
 import com.blog_rest_app.dto.post.CreatePostDTO;
 import com.blog_rest_app.dto.post.PostDTO;
 import com.blog_rest_app.dto.post.UpdatePostDTO;
@@ -19,4 +21,11 @@ public interface PostService {
     UpdatePostDTO update(UpdatePostDTO user);
 
     void deleteById(int id);
+
+    CreateCommentDTO createComment(CreateCommentDTO commentDTO, int postId);
+
+    UpdateCommentDTO updateComment(UpdateCommentDTO commentDTO);
+
+    void deleteCommentById(int id);
+
 }

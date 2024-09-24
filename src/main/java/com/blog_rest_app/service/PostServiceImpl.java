@@ -1,6 +1,8 @@
 package com.blog_rest_app.service;
 
 import com.blog_rest_app.dto.comment.CommentDTO;
+import com.blog_rest_app.dto.comment.CreateCommentDTO;
+import com.blog_rest_app.dto.comment.UpdateCommentDTO;
 import com.blog_rest_app.dto.post.CreatePostDTO;
 import com.blog_rest_app.dto.post.PostDTO;
 import com.blog_rest_app.dto.post.UpdatePostDTO;
@@ -11,6 +13,7 @@ import com.blog_rest_app.entity.Comment;
 import com.blog_rest_app.entity.Post;
 import com.blog_rest_app.entity.User;
 import com.blog_rest_app.repository.CategoryRepository;
+import com.blog_rest_app.repository.CommentRepository;
 import com.blog_rest_app.repository.PostRepository;
 import com.blog_rest_app.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -24,11 +27,13 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
+    private final CommentRepository commentRepository;
 
-    public PostServiceImpl(PostRepository postRepository, UserRepository userRepository, CategoryRepository categoryRepository) {
+    public PostServiceImpl(PostRepository postRepository, UserRepository userRepository, CategoryRepository categoryRepository, CommentRepository commentRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
+        this.commentRepository = commentRepository;
     }
 
 
@@ -80,6 +85,37 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deleteById(int id) {
         postRepository.deleteById(id);
+    }
+
+    @Override
+    public CreateCommentDTO createComment(CreateCommentDTO commentDTO, int postId) {
+        //Later it will be getting User from session.
+        //TODO Add exceptions
+        User tempUser = userRepository.findById(4).get();
+        Post tempPost = postRepository.findById(postId).get();
+
+        Comment tempComment = new Comment();
+        tempComment.setPost(tempPost);
+        tempComment.setUser(tempUser);
+        tempComment.setContent(commentDTO.content());
+        tempPost.addComment(tempComment);
+        postRepository.save(tempPost);
+        return commentDTO;
+    }
+
+    @Override
+    public UpdateCommentDTO updateComment(UpdateCommentDTO commentDTO) {
+
+        //TODO add exceptions
+        Comment tempComment = commentRepository.findById(commentDTO.id()).get();
+        tempComment.setContent(commentDTO.content());
+        commentRepository.save(tempComment);
+        return commentDTO;
+    }
+
+    @Override
+    public void deleteCommentById(int id) {
+        commentRepository.deleteById(id);
     }
 
 

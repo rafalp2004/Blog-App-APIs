@@ -1,5 +1,7 @@
 package com.blog_rest_app.controller;
 
+import com.blog_rest_app.dto.comment.CreateCommentDTO;
+import com.blog_rest_app.dto.comment.UpdateCommentDTO;
 import com.blog_rest_app.dto.post.CreatePostDTO;
 import com.blog_rest_app.dto.post.PostDTO;
 import com.blog_rest_app.dto.post.UpdatePostDTO;
@@ -40,6 +42,22 @@ public class PostController {
     @PutMapping(path="/posts")
     public UpdatePostDTO updatePost(@RequestBody UpdatePostDTO postDTO){
         return postService.update(postDTO);
+
+    }
+
+    @PostMapping(path = "/posts/{postId}/comments")
+    public CreateCommentDTO createComment(@RequestBody CreateCommentDTO commentDTO, @PathVariable int postId){
+        postService.createComment(commentDTO, postId);
+        return commentDTO;
+    }
+    @PutMapping(path = "/posts/{postId}/comments")
+    public UpdateCommentDTO updateComment(@RequestBody UpdateCommentDTO commentDTO){
+        postService.updateComment(commentDTO);
+        return commentDTO;
+    }
+    @DeleteMapping(path = "/posts/{postId}/comments/{commentId}")
+    public void deleteComment(@PathVariable int commentId){
+        postService.deleteCommentById(commentId);
 
     }
 
