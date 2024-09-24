@@ -43,7 +43,7 @@ public class Post {
     private Category category;
 
 
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments;
 

@@ -6,6 +6,7 @@ import com.blog_rest_app.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -24,6 +25,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post findById(int id) {
+        Optional<Post>  optionalPost = postRepository.findById(id);
+        if(optionalPost.isPresent()){
+            return optionalPost.get();
+        }
         return null;
     }
 

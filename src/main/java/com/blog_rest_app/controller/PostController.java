@@ -3,6 +3,8 @@ package com.blog_rest_app.controller;
 import com.blog_rest_app.entity.Post;
 import com.blog_rest_app.service.PostService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -19,4 +21,10 @@ public class PostController {
     public List<Post> getAllPosts() {
         return postService.findAll();
     }
+
+    @GetMapping(path = "/posts/{id}")
+    public Post getPostById(@PathVariable int id){
+        return postService.findById(id);
+    }
+
 }

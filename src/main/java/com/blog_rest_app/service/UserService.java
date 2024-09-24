@@ -1,15 +1,19 @@
 package com.blog_rest_app.service;
 
-import com.blog_rest_app.entity.User;
+import com.blog_rest_app.dto.user.CreateUserDTO;
+import com.blog_rest_app.dto.user.UpdateUserDTO;
+import com.blog_rest_app.dto.user.UserDTO;
 
 import java.util.List;
 
 public interface UserService {
-    List<User> findAll();
+    List<UserDTO> findAll();
 
-    User findById(int id);
+    UserDTO findById(int id);
 
-    User save(User user);
+    CreateUserDTO save(CreateUserDTO userDTO);
+
+    UpdateUserDTO update(UpdateUserDTO userDTO);
 
     void deleteById(int id);
 }
