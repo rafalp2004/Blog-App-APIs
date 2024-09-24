@@ -1,11 +1,11 @@
 package com.blog_rest_app.controller;
 
+import com.blog_rest_app.dto.post.CreatePostDTO;
+import com.blog_rest_app.dto.post.PostDTO;
+import com.blog_rest_app.dto.post.UpdatePostDTO;
 import com.blog_rest_app.entity.Post;
 import com.blog_rest_app.service.PostService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,13 +18,29 @@ public class PostController {
     }
 
     @GetMapping(path = "/posts")
-    public List<Post> getAllPosts() {
+    public List<PostDTO> getAllPosts() {
         return postService.findAll();
     }
 
     @GetMapping(path = "/posts/{id}")
-    public Post getPostById(@PathVariable int id){
+    public PostDTO getPostById(@PathVariable int id) {
         return postService.findById(id);
+    }
+
+    @PostMapping(path = "/posts")
+    public CreatePostDTO createPost(@RequestBody CreatePostDTO postDTO) {
+        return postService.save(postDTO);
+    }
+
+    @DeleteMapping(path = "/posts/{id}")
+    public void deleteById(@PathVariable int id) {
+        postService.deleteById(id);
+    }
+
+    @PutMapping(path="/posts")
+    public UpdatePostDTO updatePost(@RequestBody UpdatePostDTO postDTO){
+        return postService.update(postDTO);
+
     }
 
 }

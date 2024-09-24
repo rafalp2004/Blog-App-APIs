@@ -1,16 +1,22 @@
 package com.blog_rest_app.service;
 
+import com.blog_rest_app.dto.post.CreatePostDTO;
+import com.blog_rest_app.dto.post.PostDTO;
+import com.blog_rest_app.dto.post.UpdatePostDTO;
+import com.blog_rest_app.dto.user.UpdateUserDTO;
 import com.blog_rest_app.entity.Post;
 import com.blog_rest_app.entity.User;
 
 import java.util.List;
 
 public interface PostService {
-    List<Post> findAll();
+    List<PostDTO> findAll();
 
-    Post findById(int id);
+    PostDTO findById(int id);
 
-    Post save(Post user);
+    CreatePostDTO save(CreatePostDTO user);
+
+    UpdatePostDTO update(UpdatePostDTO user);
 
     void deleteById(int id);
 }

@@ -1,4 +1,4 @@
-package com.blog_rest_app.dto;
+package com.blog_rest_app.dto.comment;
 
 public record CommentDTO(
         int id,

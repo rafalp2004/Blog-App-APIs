@@ -67,4 +67,8 @@ public class User {
         post.setUser(this);
     }
 
+    public String getFullName(){
+        return this.firstName + " " + this.lastName;
+    }
+
 }
