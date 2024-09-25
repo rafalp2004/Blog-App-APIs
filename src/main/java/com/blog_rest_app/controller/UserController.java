@@ -5,6 +5,7 @@ import com.blog_rest_app.dto.user.UpdateUserDTO;
 import com.blog_rest_app.dto.user.UserDTO;
 import com.blog_rest_app.service.RoleService;
 import com.blog_rest_app.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,15 +15,14 @@ public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService, RoleService roleService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
 
     @GetMapping(path="/users")
     public List<UserDTO> getUsers(){
-        List<UserDTO> users = userService.findAll();
-        return users;
+        return userService.findAll();
     }
 
     @GetMapping(path="/users/{id}")
@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping(path="/users")
-    public CreateUserDTO createUser(@RequestBody CreateUserDTO userDTO){
+    public CreateUserDTO createUser(@Valid @RequestBody CreateUserDTO userDTO){
         userService.save(userDTO);
         return userDTO;
 
@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @PutMapping(path = "/users")
-    public UpdateUserDTO updateUser(@RequestBody UpdateUserDTO userDTO){
+    public UpdateUserDTO updateUser(@Valid @RequestBody UpdateUserDTO userDTO){
         return userService.update(userDTO);
     }
 

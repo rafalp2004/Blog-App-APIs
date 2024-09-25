@@ -6,12 +6,11 @@ import com.blog_rest_app.dto.comment.UpdateCommentDTO;
 import com.blog_rest_app.dto.post.CreatePostDTO;
 import com.blog_rest_app.dto.post.PostDTO;
 import com.blog_rest_app.dto.post.UpdatePostDTO;
-import com.blog_rest_app.dto.user.CreateUserDTO;
-import com.blog_rest_app.dto.user.UpdateUserDTO;
 import com.blog_rest_app.entity.Category;
 import com.blog_rest_app.entity.Comment;
 import com.blog_rest_app.entity.Post;
 import com.blog_rest_app.entity.User;
+import com.blog_rest_app.exception.ResourceNotFoundException;
 import com.blog_rest_app.repository.CategoryRepository;
 import com.blog_rest_app.repository.CommentRepository;
 import com.blog_rest_app.repository.PostRepository;
@@ -20,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -39,18 +38,14 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostDTO> findAll() {
-        return postRepository.findAll().stream().map(s -> postToDTO(s)).toList();
+        return postRepository.findAll().stream().map(this::postToDTO).toList();
     }
 
     @Override
     public PostDTO findById(int id) {
-        Optional<Post> optionalPost = postRepository.findById(id);
-        if (optionalPost.isPresent()) {
-            Post tempPost = optionalPost.get();
-            return postToDTO(tempPost);
+        Post tempPost = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post with id: " + id + " not found"));
+        return postToDTO(tempPost);
 
-        }
-        return null;
     }
 
 
@@ -60,26 +55,25 @@ public class PostServiceImpl implements PostService {
         tempPost.setTitle(postDTO.title());
         tempPost.setContent(postDTO.content());
         //Later it will be getting User from session.
-        tempPost.setUser(userRepository.findById(4).get());
+        int userId = 4;
+        tempPost.setUser(userRepository.findById(4).orElseThrow(() -> new ResourceNotFoundException("User with id: " + userId + " not found")));
         tempPost.setDateTime(LocalDateTime.now());
         Category category = categoryRepository.findByName(postDTO.category());
         tempPost.setCategory(category);
         postRepository.save(tempPost);
         return postDTO;
 
-
     }
 
     @Override
     public UpdatePostDTO update(UpdatePostDTO userDTO) {
-        Post tempPost = postRepository.findById(userDTO.id()).get();
+        Post tempPost = postRepository.findById(userDTO.id()).orElseThrow(() -> new ResourceNotFoundException("User with id: " + userDTO.id() + " not found"));
         tempPost.setTitle(userDTO.title());
         tempPost.setContent(userDTO.content());
         Category category = categoryRepository.findByName(userDTO.category());
         tempPost.setCategory(category);
         postRepository.save(tempPost);
         return userDTO;
-
     }
 
     @Override
@@ -89,10 +83,13 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public CreateCommentDTO createComment(CreateCommentDTO commentDTO, int postId) {
+
+
         //Later it will be getting User from session.
-        //TODO Add exceptions
-        User tempUser = userRepository.findById(4).get();
-        Post tempPost = postRepository.findById(postId).get();
+        int userId = 4;
+        User tempUser = userRepository.findById(4).orElseThrow(() -> new ResourceNotFoundException("User with id: " + userId + " not found"));
+        Post tempPost = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post with id: " + postId + " not found"));
+
 
         Comment tempComment = new Comment();
         tempComment.setPost(tempPost);
@@ -106,8 +103,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public UpdateCommentDTO updateComment(UpdateCommentDTO commentDTO) {
 
-        //TODO add exceptions
-        Comment tempComment = commentRepository.findById(commentDTO.id()).get();
+        Comment tempComment = commentRepository.findById(commentDTO.id()).orElseThrow(() -> new ResourceNotFoundException("Comment with id: " + commentDTO.id() + " not found"));
         tempComment.setContent(commentDTO.content());
         commentRepository.save(tempComment);
         return commentDTO;
@@ -125,7 +121,7 @@ public class PostServiceImpl implements PostService {
 
     private PostDTO postToDTO(Post post) {
 
-        List<CommentDTO> commentDTOList = post.getComments().stream().map(s -> commentToDTO(s)).toList();
+        List<CommentDTO> commentDTOList = post.getComments().stream().map(this::commentToDTO).toList();
         return new PostDTO(post.getId(), post.getTitle(), post.getContent(), post.getDateTime(), post.getCategory().getName(), commentDTOList, post.getUser().getFullName());
 
     }

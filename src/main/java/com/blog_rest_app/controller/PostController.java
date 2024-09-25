@@ -5,8 +5,8 @@ import com.blog_rest_app.dto.comment.UpdateCommentDTO;
 import com.blog_rest_app.dto.post.CreatePostDTO;
 import com.blog_rest_app.dto.post.PostDTO;
 import com.blog_rest_app.dto.post.UpdatePostDTO;
-import com.blog_rest_app.entity.Post;
 import com.blog_rest_app.service.PostService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class PostController {
     }
 
     @PostMapping(path = "/posts")
-    public CreatePostDTO createPost(@RequestBody CreatePostDTO postDTO) {
+    public CreatePostDTO createPost(@Valid @RequestBody CreatePostDTO postDTO) {
         return postService.save(postDTO);
     }
 
@@ -40,13 +40,13 @@ public class PostController {
     }
 
     @PutMapping(path="/posts")
-    public UpdatePostDTO updatePost(@RequestBody UpdatePostDTO postDTO){
+    public UpdatePostDTO updatePost(@Valid @RequestBody UpdatePostDTO postDTO){
         return postService.update(postDTO);
 
     }
 
     @PostMapping(path = "/posts/{postId}/comments")
-    public CreateCommentDTO createComment(@RequestBody CreateCommentDTO commentDTO, @PathVariable int postId){
+    public CreateCommentDTO createComment(@Valid @RequestBody CreateCommentDTO commentDTO, @PathVariable int postId){
         postService.createComment(commentDTO, postId);
         return commentDTO;
     }

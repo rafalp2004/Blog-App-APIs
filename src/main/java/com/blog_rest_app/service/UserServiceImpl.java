@@ -4,11 +4,11 @@ import com.blog_rest_app.dto.user.CreateUserDTO;
 import com.blog_rest_app.dto.user.UpdateUserDTO;
 import com.blog_rest_app.dto.user.UserDTO;
 import com.blog_rest_app.entity.User;
+import com.blog_rest_app.exception.ResourceNotFoundException;
 import com.blog_rest_app.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,20 +23,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> findAll() {
-        List<UserDTO> usersDTO = userRepository.findAll().stream().map(this::mapToDTO).toList();
-        return usersDTO;
+        return userRepository.findAll().stream().map(this::mapToDTO).toList();
     }
 
     @Override
     public UserDTO findById(int id) {
-        Optional<User> tempUser = userRepository.findById(id);
-        if (tempUser.isPresent()) {
-            User user = tempUser.get();
-            UserDTO userDTO = mapToDTO(user);
-            return userDTO;
-        }
-        return null;
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with id: " + id + " not found"));
+
+        return mapToDTO(user);
     }
+
 
     @Override
     public CreateUserDTO save(CreateUserDTO userDTO) {
@@ -52,17 +48,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UpdateUserDTO update(UpdateUserDTO userDTO) {
-        Optional<User> tempUser = userRepository.findById(userDTO.id());
-        if (tempUser.isPresent()) {
-            User user = tempUser.get();
-            user.setFirstName(userDTO.firstName());
-            user.setLastName(userDTO.lastName());
-            user.setEmail(userDTO.email());
-            userRepository.save(user);
-            return userDTO;
-        }
+        User user = userRepository.findById(userDTO.id()).orElseThrow(() -> new ResourceNotFoundException("User with id: " + userDTO.id() + " not found"));
 
-        return null;
+        user.setFirstName(userDTO.firstName());
+        user.setLastName(userDTO.lastName());
+        user.setEmail(userDTO.email());
+        userRepository.save(user);
+        return userDTO;
+
     }
 
     @Override
