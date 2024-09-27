@@ -34,31 +34,32 @@ public class PostController {
         return postService.save(postDTO);
     }
 
-    @DeleteMapping(path = "/posts/{id}")
-    public void deleteById(@PathVariable int id) {
-        postService.deleteById(id);
+    @DeleteMapping(path = "/posts/{postId}")
+    public void deleteById(@PathVariable int postId) {
+        postService.deleteById(postId);
     }
 
-    @PutMapping(path="/posts")
-    public UpdatePostDTO updatePost(@Valid @RequestBody UpdatePostDTO postDTO){
+    @PutMapping(path = "/posts")
+    public UpdatePostDTO updatePost(@Valid @RequestBody UpdatePostDTO postDTO) {
         return postService.update(postDTO);
-
     }
 
     @PostMapping(path = "/posts/{postId}/comments")
-    public CreateCommentDTO createComment(@Valid @RequestBody CreateCommentDTO commentDTO, @PathVariable int postId){
+    public CreateCommentDTO createComment(@Valid @RequestBody CreateCommentDTO commentDTO, @PathVariable int postId) {
         postService.createComment(commentDTO, postId);
         return commentDTO;
     }
+
     @PutMapping(path = "/posts/{postId}/comments")
-    public UpdateCommentDTO updateComment(@RequestBody UpdateCommentDTO commentDTO){
+    public UpdateCommentDTO updateComment(@RequestBody UpdateCommentDTO commentDTO) {
+        //TODO Checking if current user is the owner of comment
         postService.updateComment(commentDTO);
         return commentDTO;
     }
-    @DeleteMapping(path = "/posts/{postId}/comments/{commentId}")
-    public void deleteComment(@PathVariable int commentId){
-        postService.deleteCommentById(commentId);
 
+    @DeleteMapping(path = "/posts/{postId}/comments/{commentId}")
+    public void deleteComment(@PathVariable int commentId) {
+        postService.deleteCommentById(commentId);
     }
 
 }
