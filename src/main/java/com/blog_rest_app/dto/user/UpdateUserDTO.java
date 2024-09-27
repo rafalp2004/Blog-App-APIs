@@ -2,10 +2,11 @@ package com.blog_rest_app.dto.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record UpdateUserDTO(
-        @NotBlank
+        @NotNull
         int id,
 
         @NotBlank

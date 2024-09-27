@@ -1,10 +1,11 @@
 package com.blog_rest_app.dto.post;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record UpdatePostDTO(
-        @NotBlank
+        @NotNull
         int id,
 
         @NotBlank
