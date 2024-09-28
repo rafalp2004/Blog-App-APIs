@@ -8,6 +8,7 @@ import com.blog_rest_app.entity.User;
 import com.blog_rest_app.exception.ResourceNotFoundException;
 import com.blog_rest_app.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -80,7 +81,7 @@ public class UserServiceImpl implements UserService {
         if(authentication.isAuthenticated()){
             return jwtService.generateToken(userDTO.email());
         }
-        return "Failed";
+        throw new BadCredentialsException("Invalid credentials");
 
     }
 

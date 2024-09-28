@@ -21,15 +21,13 @@ public class Comment {
     private String content;
 
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name="user_id")
     @JsonIgnore
     private User user;
 
-
-
     @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name="post_id")
     @JsonIgnore
     private Post post;

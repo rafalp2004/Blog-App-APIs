@@ -35,25 +35,24 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @OneToMany(mappedBy = "user", fetch=FetchType.LAZY,  cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "user", fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Comment> comments;
-
 
 
     @ManyToMany
     @JoinTable(
-            name="users_roles",
-            joinColumns = @JoinColumn(name="user_id"),
-            inverseJoinColumns = @JoinColumn(name="role_id")
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     @JsonIgnore
     private List<Role> roles;
 
-    public void addRole(Role role){
-        if(roles == null){
+    public void addRole(Role role) {
+        if (roles == null) {
             roles = new ArrayList<>();
         }
         roles.add(role);
@@ -67,7 +66,7 @@ public class User {
         post.setUser(this);
     }
 
-    public String getFullName(){
+    public String getFullName() {
         return this.firstName + " " + this.lastName;
     }
 

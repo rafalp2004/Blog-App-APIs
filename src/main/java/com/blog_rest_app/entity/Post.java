@@ -34,11 +34,12 @@ public class Post {
     private LocalDateTime dateTime;
 
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+
+    @ManyToOne
     @JoinColumn(name="category_id")
     private Category category;
 

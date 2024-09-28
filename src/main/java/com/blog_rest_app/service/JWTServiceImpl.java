@@ -23,7 +23,7 @@ public class JWTServiceImpl implements JWTService {
 
     public JWTServiceImpl() {
         try {
-            KeyGenerator keyGenerator =KeyGenerator.getInstance("HmacSHA256");
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
             SecretKey sk = keyGenerator.generateKey();
             secretKey = Base64.getEncoder().encodeToString(sk.getEncoded());
 
@@ -35,7 +35,7 @@ public class JWTServiceImpl implements JWTService {
     @Override
     public String generateToken(String email) {
 
-        Map<String, Object> claims =new HashMap<>();
+        Map<String, Object> claims = new HashMap<>();
 
 
         return Jwts.builder()
@@ -48,8 +48,6 @@ public class JWTServiceImpl implements JWTService {
                 .signWith(getKey())
                 .compact();
     }
-
-
 
 
     private SecretKey getKey() {
@@ -74,6 +72,7 @@ public class JWTServiceImpl implements JWTService {
                 .parseSignedClaims(token)
                 .getPayload();
     }
+
     @Override
     public boolean validateToken(String token, UserDetails userDetails) {
         final String email = extractEmail(token);

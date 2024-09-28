@@ -34,7 +34,7 @@ public class SecurityConfig {
         return http
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers( "/login").permitAll()
+                        .requestMatchers("/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/posts").permitAll()
                         .requestMatchers(HttpMethod.GET, "/posts/{id}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
