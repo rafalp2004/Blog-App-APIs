@@ -8,11 +8,11 @@ This is a **Blog Application** built using **Spring Boot**, **Spring Security**,
 ## Technologies Used
 
 - **Java 17**
-- **Spring Boot 3.x**
+- **Spring Boot 3.3.4**
 - **Spring Security**
 - **JWT (JSON Web Token)**
 - **Hibernate / JPA**
-- **MySQL / PostgreSQL (configurable)**
+- **MySQL**
 - **Lombok**
 - **Maven**
 
